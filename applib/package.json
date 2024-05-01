@@ -1,0 +1,21 @@
+{
+  "name": "applib",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.2.6",
+    "fcm-node": "^1.6.1",
+    "moment-timezone": "^0.5.39",
+    "node-uuid": "^1.4.8",
+    "save": "^2.9.0",
+    "uuid": "^9.0.0",
+    "winston": "^3.8.2",
+    "winston-daily-rotate-file": "^4.7.1"
+  }
+}

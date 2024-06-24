@@ -2993,7 +2993,6 @@ module.exports.fetchJobs = async (req, res) => {
         functionContext,
         requestContext
       );
-
       fetchJobsResponse(functionContext, fetchJobsDetailsDBResult);
     } else {
       let fetchAllJobsDBResult = await databaseHelper.fetchAllJobsDB(
@@ -3041,13 +3040,14 @@ module.exports.fetchJobs = async (req, res) => {
 // fetch jobs  Response
 
 const fetchJobsResponse = (functionContext, resolvedResult) => {
+
   const logger = functionContext.logger;
 
   logger.logInfo(`fetchJobsResponse() invoked!`);
 
   let fetchJobsResponse = new coreRequestModel.fetchJobsResponse();
 
-  fetchJobsResponse.RequestId = functionContext.requestId;
+  fetchJobsResponse.RequestID = functionContext.requestId;
 
   if (functionContext.error) {
     fetchJobsResponse.Error = functionContext.error;
@@ -3057,7 +3057,6 @@ const fetchJobsResponse = (functionContext, resolvedResult) => {
     fetchJobsResponse.Details = resolvedResult;
   }
   appLib.SendHttpResponse(functionContext, fetchJobsResponse);
-
   logger.logInfo(
     `fetchJobsResponse response :: ${JSON.stringify(fetchJobsResponse)}`
   );

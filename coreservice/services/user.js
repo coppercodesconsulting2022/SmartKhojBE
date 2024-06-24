@@ -40,10 +40,8 @@ async function FileUploadFunction(
     ACL: "public-read",
   };
 
-  console.log("farams", params);
   try {
     const response = await s3.upload(params).promise();
-    console.log("location", response.Location);
     return response.Location;
   } catch (err) {
     logger.logInfo(`fileUpload() :: Error :: ${JSON.stringify(err)}`);
@@ -2221,17 +2219,11 @@ module.exports.pushNotificationByUser = async (req, res) => {
       requestContext
     );
 
-    console.log("findNearbyLocationsResult", findNearbyLocationsResult);
-
     let BusinessDetails = findNearbyLocationsResult[0];
-
-    console.log("BusinessDetails", BusinessDetails);
     let UserDetails = findNearbyLocationsResult[1];
-    console.log("UserDetails", UserDetails);
 
     try {
       BusinessDetails?.map(async (element) => {
-        console.log("element", typeof element.PackageId);
         let pushNotificationDataContext = {
           requestId: res.apiContext.requestId,
           error: null,
@@ -2255,8 +2247,6 @@ module.exports.pushNotificationByUser = async (req, res) => {
             .format("YYYY-MM-DD HH:mm:ss.SSS"),
         };
 
-        console.log("element", element);
-
         const postData = {
           BusinessId: element.Id,
           Calls: 0,
@@ -2265,10 +2255,8 @@ module.exports.pushNotificationByUser = async (req, res) => {
         };
 
         const leads = await addLeadsDb(functionContext, postData);
-        console.log({ leads });
 
         if (element.PackageId === "1" || element.PackageId === "2") {
-          console.log("inside 1st If", element.PackageId);
           return new Promise(async (resolve) => {
             setTimeout(async () => {
               const notifDetails = await saveNotification(
@@ -2283,7 +2271,6 @@ module.exports.pushNotificationByUser = async (req, res) => {
             }, 30000);
           });
         } else if (element.PackageId === "3" || element.PackageId === "4") {
-          console.log("inside 2nd If", element.PackageId);
 
           const notifDetails = await saveNotification(
             pushNotificationDataContext
@@ -2300,7 +2287,6 @@ module.exports.pushNotificationByUser = async (req, res) => {
         }
       });
     } catch (err) {
-      console.log("Err", err);
       res.send({ err: err });
     }
     const text = "Notification sent successfully";
@@ -3289,10 +3275,8 @@ module.exports.addUserResume = async (req, res) => {
       var toBeUploaded = [];
       var imagetobeUploaded = [];
 
-      console.log("REq.files", req.files);
 
       for (let count = 0; count < req.files.length; count++) {
-        console.log("length", req.files.length);
         var file = req.files[count];
         if (file.hasOwnProperty("filename")) {
           if (file.filename) {
@@ -3610,8 +3594,6 @@ module.exports.appliedJobs = async (req, res) => {
       requestContext
     );
 
-    console.log("fetchResumeDB", fetchResumeDB);
-
     let fetchVendorBasedOnJobIdDb =
       await databaseHelper.fetchVendorBasedOnJobIdDb(
         functionContext,
@@ -3623,8 +3605,6 @@ module.exports.appliedJobs = async (req, res) => {
       fetchResumeDB,
       fetchVendorBasedOnJobIdDb
     );
-
-    console.log(notifyVendors);
 
     appliedJobsResponse(functionContext, appliedJobsDBResult);
   } catch (errappliedJobs) {

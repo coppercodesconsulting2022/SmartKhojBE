@@ -376,7 +376,7 @@ module.exports.addSavedServiceDb = async (functionContext, resolvedResult) => {
     if (
       errfetchsavedservices.sqlState &&
       errfetchsavedservices.sqlState ==
-        constant.ErrorCode.Saved_Service_Already_Exists
+      constant.ErrorCode.Saved_Service_Already_Exists
     ) {
       errorCode = constant.ErrorCode.Saved_Service_Already_Exists;
       errorMessage = constant.ErrorMessage.Saved_Service_Already_Exists;
@@ -422,7 +422,7 @@ module.exports.fetchSavedServicesDb = async (
     if (
       errfetchSavedServices.sqlState &&
       errfetchSavedServices.sqlState ==
-        constant.ErrorCode.No_Saved_Services_Available
+      constant.ErrorCode.No_Saved_Services_Available
     ) {
       errorCode = constant.ErrorCode.No_Saved_Services_Available;
       errorMessage = constant.ErrorMessage.No_Saved_Services_Available;
@@ -1139,8 +1139,8 @@ module.exports.updatePasswordDb = async (functionContext, resolvedResult) => {
     if (
       errupdatePassword.sqlState &&
       errupdatePassword.sqlState ==
-        constant.ErrorCode
-          .New_password_should_not_be_same_as_your_previous_password
+      constant.ErrorCode
+        .New_password_should_not_be_same_as_your_previous_password
     ) {
       errorCode =
         constant.ErrorCode
@@ -1173,7 +1173,6 @@ module.exports.checkIfRegisteredDB = async (
   functionContext,
   resolvedResult
 ) => {
-  // console.log("files===>", resolvedResult.files.join(","));
   let logger = functionContext.logger;
 
   logger.logInfo("checkIfRegisteredDB() invoked!");
@@ -1243,9 +1242,11 @@ module.exports.addCareerPreferencesDb = async (
         WorkStatus: resolvedResult.WorkStatus,
         WorkExperience: resolvedResult.WorkExperience,
         Salary: resolvedResult.Salary,
-        HighestEducation: resolvedResult.HighestEducation,
+        HighestEducation: resolvedResult.HighestEducation
       }
     );
+
+    await databaseModule.knex('jobseekercareerpreferences').where({ Id: rows[0][0][0].Id }).update({ Verified: 1 });
 
     logger.logInfo(
       `addCareerPreferencesDb() :: Returned Result :: ${JSON.stringify(
@@ -1264,7 +1265,7 @@ module.exports.addCareerPreferencesDb = async (
     if (
       erraddCareerPreferencesDb.sqlState &&
       erraddCareerPreferencesDb.sqlState ==
-        constant.ErrorCode.Career_Already_Added
+      constant.ErrorCode.Career_Already_Added
     ) {
       errorCode = constant.ErrorCode.Career_Already_Added;
       errorMessage = constant.ErrorMessage.Career_Already_Added;
@@ -1359,6 +1360,10 @@ module.exports.addJobSeekerDetailsDb = async (
       }
     );
 
+    await databaseModule.knex.raw('SET SQL_SAFE_UPDATES = 0');
+    await databaseModule.knex('jobseekercareerpreferences').where({ UserId: resolvedResult.UserId }).update({ JobSeekerId: rows[0][0][0].Id });
+    await databaseModule.knex.raw('SET SQL_SAFE_UPDATES = 1');
+
     logger.logInfo(
       `addJobSeekerDetailsDb() :: Returned Result :: ${JSON.stringify(
         rows[0][0]
@@ -1367,6 +1372,7 @@ module.exports.addJobSeekerDetailsDb = async (
 
     return rows[0][0][0] ? rows[0][0][0] : null;
   } catch (erraddJobSeekerDetailsDb) {
+
     logger.logInfo(
       `addJobSeekerDetailsDb() :: Error :: ${JSON.stringify(
         erraddJobSeekerDetailsDb
@@ -1383,7 +1389,7 @@ module.exports.addJobSeekerDetailsDb = async (
     } else if (
       erraddJobSeekerDetailsDb.sqlState &&
       erraddJobSeekerDetailsDb.sqlState ==
-        constant.ErrorCode.Job_Seeker_Already_Exists
+      constant.ErrorCode.Job_Seeker_Already_Exists
     ) {
       errorCode = constant.ErrorCode.Job_Seeker_Already_Exists;
       errorMessage = constant.ErrorMessage.Job_Seeker_Already_Exists;
@@ -1454,7 +1460,7 @@ module.exports.fetchJobSeekerDetailsDb = async (
     } else if (
       errfetchJobSeekerDetailsDb.sqlState &&
       errfetchJobSeekerDetailsDb.sqlState ==
-        constant.ErrorCode.Job_Seeker_Already_Exists
+      constant.ErrorCode.Job_Seeker_Already_Exists
     ) {
       errorCode = constant.ErrorCode.Job_Seeker_Already_Exists;
       errorMessage = constant.ErrorMessage.Job_Seeker_Already_Exists;
@@ -1483,8 +1489,6 @@ module.exports.addUserResumeDb = async (
   } else {
     image = images;
   }
-
-  console.log("Images", image);
 
   logger.logInfo("addUserResumeDb() Invoked !");
 
@@ -1572,7 +1576,7 @@ module.exports.saveUnsaveJobsDb = async (functionContext, resolvedResult) => {
     } else if (
       errsaveUnsaveJobsDb.sqlState &&
       errsaveUnsaveJobsDb.sqlState ==
-        constant.ErrorCode.Job_Seeker_Already_Exists
+      constant.ErrorCode.Job_Seeker_Already_Exists
     ) {
       errorCode = constant.ErrorCode.Job_Seeker_Already_Exists;
       errorMessage = constant.ErrorMessage.Job_Seeker_Already_Exists;
@@ -1842,7 +1846,6 @@ module.exports.deleteJobNotificationsDB = async (
       )}`
     );
     var Details = rows[0][0][0];
-    // console.log("Details", rows[0][0][0]);
     return Details;
   } catch (errdeleteJobNotificationsDB) {
     logger.logInfo(
@@ -1912,9 +1915,6 @@ module.exports.fetchUserResumeDb = async (functionContext, resolvedResult) => {
     logger.logInfo(
       `fetchUserResumeDb() :: Returned Result :: ${JSON.stringify(rows[0][0])}`
     );
-
-    console.log("rows[0][0][0]", rows[0][0][0]);
-
     return rows[0][0][0] ? rows[0][0][0] : null;
   } catch (errFetchUserResume) {
     logger.logInfo(
@@ -1968,7 +1968,7 @@ module.exports.fetchVendorBasedOnJobIdDb = async (
     if (
       errFetchVendorBasedOnJobIdDb.sqlState &&
       errFetchVendorBasedOnJobIdDb.sqlState ==
-        constant.ErrorCode.No_Service_Found
+      constant.ErrorCode.No_Service_Found
     ) {
       errorCode = constant.ErrorCode.No_Service_Found;
       errorMessage = constant.ErrorMessage.No_Service_Found;

@@ -177,8 +177,8 @@ module.exports.pushNotificationByUserRequest = (requestParams) => {
   let joiSchema = joi.object({
     SubCategoryId: joi.number().required(),
     UserId: joi.number().required(),
-    Latitude: joi.number().required(),
-    Longitude: joi.number().required(),
+    Latitude: joi.number().optional().allow(null),
+    Longitude: joi.number().optional().allow(null),
     UserType: joi.number().required(),
   });
   return joiSchema.validate(requestParams);

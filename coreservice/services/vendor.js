@@ -1131,7 +1131,8 @@ module.exports.getVendorsRadius = async (req, res) => {
       functionContext,
       requestContext
     );
-
+    console.log('radius res',getVendorsRadiusDBResult);
+    
     getVendorsRadiusResponse(functionContext, getVendorsRadiusDBResult);
   } catch (errGetVendorsRadiusDBResult) {
     if (

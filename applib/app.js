@@ -113,35 +113,65 @@ module.exports.SendPushNotification = async function (
 
       // resolve(constant.ErrorMessage.Success);
       //resolve(notifResult.config.data);
-      var fcm = new FCM(cred);
+      // var fcm = new FCM(cred);
 
-      var message = {
-        //this may vary according to the message type (single recipient, multicast, topic, et cetera)
-        to: deviceToken,
+      // var message = {
+      //   //this may vary according to the message type (single recipient, multicast, topic, et cetera)
+      //   to: deviceToken,
+      //   notification: {
+      //     body: pushNotificationData.body,
+      //     title: pushNotificationData.title,
+      //     UserId: pushNotificationData.UserId,
+      //     VendorId: pushNotificationData.VendorId,
+      //     NotificationRef: pushNotificationData.NotificationRef,
+      //     image: pushNotificationData.image,
+      //   },
+      // };
+      const message = {
         notification: {
-          body: pushNotificationData.body,
           title: pushNotificationData.title,
+          body: pushNotificationData.body,
+        },
+        data: {
           UserId: pushNotificationData.UserId,
           VendorId: pushNotificationData.VendorId,
           NotificationRef: pushNotificationData.NotificationRef,
           image: pushNotificationData.image,
         },
       };
-      try {
-        await fcm.send(message, function (err, response) {
-          if (err) {
-            console.log("ERR 1", err);
-            logger.logInfo("FCM Send():: Something has gone wrong!", err);
-            resolve(constant.ErrorMessage.ApplicationError);
+      // try {
+      //   await fcm.send(message, function (err, response) {
+      //     if (err) {
+      //       console.log("ERR 1", err);
+      //       logger.logInfo("FCM Send():: Something has gone wrong!", err);
+      //       resolve(constant.ErrorMessage.ApplicationError);
+      //     } else {
+      //       console.log("response", response);
+      //       logger.logInfo("FCM Send():: sent with response: ", response);
+      //       resolve(constant.ErrorMessage.Success);
+      //     }
+      //   });
+      // } catch (err) {
+      //   console.log("ERROR in sending notification", err);
+      //   logger.logInfo("ERROR in sending notification :: ", err);
+      // }
+      const response = await admin.messaging().sendToDevice(deviceToken, message);
+
+      if (response.failureCount > 0) {
+        response.results.forEach((result, index) => {
+          if (result.error) {
+            console.log(`Error sending to device ${deviceToken}:`, result.error);
+            logger.logInfo(
+              `Error sending notification to device ${deviceToken}: ${result.error.message}`
+            );
           } else {
-            console.log("response", response);
-            logger.logInfo("FCM Send():: sent with response: ", response);
-            resolve(constant.ErrorMessage.Success);
+            logger.logInfo(`Notification sent successfully to device ${deviceToken}`);
           }
         });
-      } catch (err) {
-        console.log("ERROR in sending notification", err);
-        logger.logInfo("ERROR in sending notification :: ", err);
+        resolve("Some notifications failed to send.");
+      } else {
+        logger.logInfo(`Notification sent successfully to device ${deviceToken}`);
+        resolve("Notification sent successfully.");
       }
     } catch (err) {
       logger.logInfo(

@@ -175,7 +175,7 @@ module.exports.deleteNotification = (requestParams) => {
 // by user notification
 module.exports.pushNotificationByUserRequest = (requestParams) => {
   let joiSchema = joi.object({
-    SubCategoryId: joi.string().required(),
+    SubCategoryId: joi.number().required(),
     UserId: joi.number().required(),
     Latitude: joi.number().required(),
     Longitude: joi.number().required(),

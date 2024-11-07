@@ -158,7 +158,7 @@ class getVendorsRadiusRequest {
       : null;
     this.Latitude = req.query.Latitude ? req.query.Latitude : null;
     this.Longitude = req.query.Longitude ? req.query.Longitude : null;
-    this.Radius = req.query.Radius ? req.query.Radius : null;
+    // this.Radius = req.query.Radius ? req.query.Radius : null;
   }
 }
 

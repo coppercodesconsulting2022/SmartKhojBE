@@ -50,6 +50,10 @@ app.use("/api/admin", adminRoutes);
 const paymentRoutes = require("./routes/payments");
 app.use("/api/payment", paymentRoutes);
 
+app.get("/", (req, res) => {
+  res.send("Hello, World!");
+});
+
 async function startServerProcess(log) {
   try {
     log.logInfo(`StartServerProcess Invoked()`);

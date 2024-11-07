@@ -132,7 +132,7 @@ module.exports.getVendorsRadius = (requestParams) => {
     SubCategoryId: joi.string().required(),
     Latitude: joi.string().required(),
     Longitude: joi.string().required(),
-    Radius: joi.string().required(),
+    // Radius: joi.string().required(),
   });
   return joiSchema.validate(requestParams);
 };

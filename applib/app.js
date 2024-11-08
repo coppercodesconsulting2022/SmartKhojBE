@@ -3,6 +3,7 @@ var uuid = require("node-uuid");
 var constant = require("./constant");
 var FCM = require("fcm-node");
 var axios = require("axios");
+const admin = require("firebase-admin");
 
 function UUID() {}
 
@@ -15,6 +16,12 @@ UUID.prototype.GetTimeBasedID = () => {
     clockseq: 0x1234,
   });
 };
+
+
+const serviceAccount = require("./serviceAccountKey.json");
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+});
 
 exports.SendHttpResponse = function (functionContext, response) {
   let httpResponseType = constant.ErrorCode.Success;
@@ -133,12 +140,19 @@ module.exports.SendPushNotification = async function (
           body: pushNotificationData.body,
         },
         data: {
-          UserId: pushNotificationData.UserId,
+         // UserId: pushNotificationData.UserId,
           VendorId: pushNotificationData.VendorId,
           NotificationRef: pushNotificationData.NotificationRef,
-          image: pushNotificationData.image,
+          image: pushNotificationData.image.Image,
         },
       };
+const tokensArray = Array.isArray(deviceToken) ? deviceToken : [deviceToken];
+console.log('tokens',tokensArray );
+ const multicastMessage = {
+        tokens: tokensArray, // array of device tokens
+        ...message,
+      };
+ 
       // try {
       //   await fcm.send(message, function (err, response) {
       //     if (err) {
@@ -155,8 +169,9 @@ module.exports.SendPushNotification = async function (
       //   console.log("ERROR in sending notification", err);
       //   logger.logInfo("ERROR in sending notification :: ", err);
       // }
-      const response = await admin.messaging().sendToDevice(deviceToken, message);
-
+console.log('multicastMessage',multicastMessage);
+      const response = await admin.messaging().sendEachForMulticast(multicastMessage);
+	 console.log('response ',response.responses );
       if (response.failureCount > 0) {
         response.results.forEach((result, index) => {
           if (result.error) {

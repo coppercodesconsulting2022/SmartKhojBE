@@ -476,6 +476,7 @@ const addReviewReplyResponse = (functionContext, resolvedResult) => {
 
 //Addleads Request
 module.exports.addLeads = async (req, res) => {
+console.log('in leads')
   let logger = new appLib.Logger(req.originalUrl, res.apiContext.requestId);
 
   logger.logInfo(`addLeads invoked()!!`);
@@ -493,7 +494,7 @@ module.exports.addLeads = async (req, res) => {
   };
 
   let addLeadsDetailsRequest = new coreRequestModel.addLeadsRequest(req);
-
+console.log('in leads req',addLeadsDetailsRequest )
   logger.logInfo(`addleads() :: Request Object :: ${addLeadsDetailsRequest}`);
 
   let requestContext = {

@@ -198,6 +198,7 @@ module.exports.addReviewReplyDb = async (functionContext, resolvedResult) => {
 //Add Leads
 
 module.exports.addLeadsDb = async (functionContext, resolvedResult) => {
+console.log('result',resolvedResult);
   let logger = functionContext.logger;
 
   logger.logInfo("addLeadsDb() Invoked !");

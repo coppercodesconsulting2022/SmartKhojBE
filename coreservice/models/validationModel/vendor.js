@@ -107,7 +107,7 @@ module.exports.addBusinessDetail = (requestParams) => {
     Longitude: joi.string().required(),
     // Location: joi.number().optional().allow(null),
     Images: joi.string().optional().allow(null),
-    Description: joi.string().required(),
+    Description: joi.string().optional().allow(null),
     ServingCities: joi.string().required(),
     Services: joi.string().optional().allow(null),
     OtherServices: joi.string().optional().allow(null),

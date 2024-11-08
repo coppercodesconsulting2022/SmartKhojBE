@@ -963,6 +963,7 @@ module.exports.findNearbyLocations = async (
 ) => {
   let logger = functionContext.logger;
 
+
   logger.logInfo("findNearbyLocations() Invoked !");
 
   try {

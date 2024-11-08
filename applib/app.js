@@ -4,6 +4,10 @@ var constant = require("./constant");
 var FCM = require("fcm-node");
 var axios = require("axios");
 const admin = require("firebase-admin");
+<<<<<<< HEAD
+=======
+
+>>>>>>> 610bb6b2756b7a4e8e5c8c03f97f819332fe4f1e
 function UUID() {}
 
 UUID.prototype.GetTimeBasedID = () => {
@@ -16,6 +20,10 @@ UUID.prototype.GetTimeBasedID = () => {
   });
 };
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 610bb6b2756b7a4e8e5c8c03f97f819332fe4f1e
 const serviceAccount = require("./serviceAccountKey.json");
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
@@ -139,13 +147,23 @@ module.exports.SendPushNotification = async function (
           body: pushNotificationData.body,
         },
         data: {
-          UserId: pushNotificationData.UserId,
+         // UserId: pushNotificationData.UserId,
           VendorId: pushNotificationData.VendorId,
           NotificationRef: pushNotificationData.NotificationRef,
           image: pushNotificationData.image.Image,
         },
       };
+<<<<<<< HEAD
 
+=======
+const tokensArray = Array.isArray(deviceToken) ? deviceToken : [deviceToken];
+console.log('tokens',tokensArray );
+ const multicastMessage = {
+        tokens: tokensArray, // array of device tokens
+        ...message,
+      };
+ 
+>>>>>>> 610bb6b2756b7a4e8e5c8c03f97f819332fe4f1e
       // try {
       //   await fcm.send(message, function (err, response) {
       //     if (err) {
@@ -162,10 +180,16 @@ module.exports.SendPushNotification = async function (
       //   console.log("ERROR in sending notification", err);
       //   logger.logInfo("ERROR in sending notification :: ", err);
       // }
+<<<<<<< HEAD
       const response = await admin
         .messaging()
         .sendEachForMulticast(message);
 
+=======
+console.log('multicastMessage',multicastMessage);
+      const response = await admin.messaging().sendEachForMulticast(multicastMessage);
+	 console.log('response ',response.responses );
+>>>>>>> 610bb6b2756b7a4e8e5c8c03f97f819332fe4f1e
       if (response.failureCount > 0) {
         response.results.forEach((result, index) => {
           if (result.error) {

@@ -2218,9 +2218,10 @@ module.exports.pushNotificationByUser = async (req, res) => {
       functionContext,
       requestContext
     );
-
+	console.log('near locations',findNearbyLocationsResult )
     let BusinessDetails = findNearbyLocationsResult[0];
     let UserDetails = findNearbyLocationsResult[1];
+console.log('near BusinessDetails ',BusinessDetails  )
 
     try {
       BusinessDetails?.map(async (element) => {
